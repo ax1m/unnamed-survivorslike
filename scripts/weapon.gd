@@ -1,11 +1,14 @@
 extends Node2D
 
+@onready var player: CharacterBody2D = $".."
+
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var animation_player: AnimationPlayer = $Sprite2D/AnimationPlayer
 @onready var collision_shape: CollisionShape2D = $Sprite2D/Hitbox/CollisionShape2D
 
 
 func _on_cooldown_timeout() -> void:
+	rotation = player.closest_enemy_dir()
 	sprite_2d.visible = true
 	collision_shape.disabled = false
 	animation_player.play("swing")
