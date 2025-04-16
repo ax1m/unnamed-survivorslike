@@ -106,7 +106,7 @@ script = SubResource("GDScript_lnu2h")
 unique_name_in_owner = true
 script = ExtResource("6_p57ef")
 
-[node name="Timer" type="Timer" parent="GameManager"]
+[node name="RestartTimer" type="Timer" parent="GameManager"]
 wait_time = 2.0
 
 [node name="Coins" type="Node" parent="."]
@@ -131,4 +131,4 @@ position = Vector2(22, -71)
 [node name="Enemy3" parent="Enemies" instance=ExtResource("4_lbhrr")]
 position = Vector2(85, -47)
 
-[connection signal="timeout" from="GameManager/Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="GameManager/RestartTimer" to="GameManager" method="_on_timer_timeout"]
