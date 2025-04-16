@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://ctvbedw7wunle"]
+[gd_scene load_steps=14 format=3 uid="uid://ctvbedw7wunle"]
 
 [ext_resource type="PackedScene" uid="uid://bah2psdn7po0r" path="res://scenes/player.tscn" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://dj2d0hp6gcir6" path="res://scripts/game.gd" id="1_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://dj1k2k5yiyyth" path="res://scenes/weapon.tscn" id="2_0tnpc"]
 [ext_resource type="FontFile" uid="uid://8t764y7m17al" path="res://assets/brackeys_platformer_assets/fonts/PixelOperator8-Bold.ttf" id="3_iywne"]
 [ext_resource type="PackedScene" uid="uid://c2h1ufoy8dls8" path="res://scenes/coin.tscn" id="3_lnu2h"]
 [ext_resource type="FontFile" uid="uid://cc23hpjk25mv6" path="res://assets/brackeys_platformer_assets/fonts/PixelOperator8.ttf" id="4_gee14"]
@@ -44,6 +45,9 @@ script = ExtResource("1_yqjtg")
 [node name="Player" parent="." instance=ExtResource("1_uwrxv")]
 position = Vector2(0, -5)
 
+[node name="Weapon" parent="Player" instance=ExtResource("2_0tnpc")]
+position = Vector2(0, 5)
+
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, 5)
 zoom = Vector2(4, 4)
@@ -78,8 +82,8 @@ text = "has cum"
 [node name="Score" type="Label" parent="Player/UI"]
 offset_left = -128.0
 offset_top = -71.0
-offset_right = -88.0
-offset_bottom = -48.0
+offset_right = -64.0
+offset_bottom = -63.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_gee14")

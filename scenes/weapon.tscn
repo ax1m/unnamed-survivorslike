@@ -1,0 +1,81 @@
+[gd_scene load_steps=7 format=3 uid="uid://dj1k2k5yiyyth"]
+
+[ext_resource type="Script" uid="uid://baa83listkkjn" path="res://scripts/weapon.gd" id="1_uxn4k"]
+[ext_resource type="Texture2D" uid="uid://cfov30lre088v" path="res://assets/Free - Raven Fantasy Icons/Full Spritesheet/64x64.png" id="2_bmw2d"]
+
+[sub_resource type="Animation" id="Animation_8fp1k"]
+resource_name = "swing"
+length = 0.5
+step = 0.0333
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0),
+"points": PackedFloat32Array(-0.261799, -0.25, 0, 0.25, 0, 2.35619, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5)
+}
+
+[sub_resource type="Animation" id="Animation_cjr6y"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-0.261799, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xrduv"]
+_data = {
+&"RESET": SubResource("Animation_cjr6y"),
+&"swing": SubResource("Animation_8fp1k")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5csnh"]
+size = Vector2(63.3908, 20)
+
+[node name="Weapon" type="Node2D"]
+rotation = -0.261799
+script = ExtResource("1_uxn4k")
+
+[node name="Cooldown" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+rotation = -0.261799
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_bmw2d")
+offset = Vector2(42, -42)
+region_enabled = true
+region_rect = Rect2(448, 5760, 64, 64)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_xrduv")
+}
+
+[node name="Hitbox" type="Area2D" parent="Sprite2D"]
+position = Vector2(38.1244, -38.0333)
+rotation = -0.785398
+scale = Vector2(1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Hitbox"]
+position = Vector2(16.6195, -5.72205e-06)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_5csnh")
+disabled = true
+
+[connection signal="timeout" from="Cooldown" to="." method="_on_cooldown_timeout"]
+[connection signal="animation_finished" from="Sprite2D/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="body_entered" from="Sprite2D/Hitbox" to="." method="_on_hitbox_body_entered"]
