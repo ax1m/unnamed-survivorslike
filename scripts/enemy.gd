@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 const SPEED = 40
 
-@onready var player: CharacterBody2D = $"../Player"
+@onready var player: CharacterBody2D = $"../../Player"
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 

@@ -1,10 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://ctvbedw7wunle"]
+[gd_scene load_steps=13 format=3 uid="uid://ctvbedw7wunle"]
 
 [ext_resource type="PackedScene" uid="uid://bah2psdn7po0r" path="res://scenes/player.tscn" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://dj2d0hp6gcir6" path="res://scripts/game.gd" id="1_yqjtg"]
 [ext_resource type="FontFile" uid="uid://8t764y7m17al" path="res://assets/brackeys_platformer_assets/fonts/PixelOperator8-Bold.ttf" id="3_iywne"]
 [ext_resource type="PackedScene" uid="uid://c2h1ufoy8dls8" path="res://scenes/coin.tscn" id="3_lnu2h"]
+[ext_resource type="FontFile" uid="uid://cc23hpjk25mv6" path="res://assets/brackeys_platformer_assets/fonts/PixelOperator8.ttf" id="4_gee14"]
 [ext_resource type="PackedScene" uid="uid://c8t7nu33fyu0y" path="res://scenes/enemy.tscn" id="4_lbhrr"]
+[ext_resource type="Texture2D" uid="uid://bd2fvlmrvwdn6" path="res://assets/brackeys_platformer_assets/sprites/coin.png" id="5_0tnpc"]
+[ext_resource type="Script" uid="uid://bph5rvqguc7rh" path="res://scripts/game_manager.gd" id="6_p57ef"]
 
 [sub_resource type="Gradient" id="Gradient_iywne"]
 
@@ -41,20 +44,26 @@ script = ExtResource("1_yqjtg")
 [node name="Player" parent="." instance=ExtResource("1_uwrxv")]
 position = Vector2(0, -5)
 
-[node name="Label" type="Label" parent="Player"]
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(0, 5)
+zoom = Vector2(4, 4)
+
+[node name="UI" type="Node2D" parent="Player"]
+z_index = 999
+
+[node name="Deth" type="Label" parent="Player/UI"]
 visible = false
-z_index = 10
 offset_left = -96.0
-offset_top = -16.0
+offset_top = -21.0
 offset_right = 96.0
-offset_bottom = 32.0
+offset_bottom = 27.0
 theme_override_colors/font_color = Color(0.662745, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("3_iywne")
 theme_override_font_sizes/font_size = 48
 text = "DETH"
 
-[node name="Label" type="Label" parent="Player/Label"]
+[node name="Label" type="Label" parent="Player/UI/Deth"]
 layout_mode = 0
 offset_left = 70.0
 offset_top = 46.0
@@ -66,29 +75,24 @@ theme_override_fonts/font = ExtResource("3_iywne")
 theme_override_font_sizes/font_size = 8
 text = "has cum"
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2(0, 5)
-zoom = Vector2(4, 4)
+[node name="Score" type="Label" parent="Player/UI"]
+offset_left = -128.0
+offset_top = -71.0
+offset_right = -88.0
+offset_bottom = -48.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_gee14")
+theme_override_font_sizes/font_size = 8
+text = "0"
 
-[node name="Coin" parent="." instance=ExtResource("3_lnu2h")]
-position = Vector2(-66, -37)
+[node name="Sprite2D" type="Sprite2D" parent="Player/UI/Score"]
+position = Vector2(-7, 4)
+texture = ExtResource("5_0tnpc")
+region_enabled = true
+region_rect = Rect2(0, 0, 15.9339, 16)
 
-[node name="Coin2" parent="." instance=ExtResource("3_lnu2h")]
-position = Vector2(-111, 47)
-
-[node name="Coin3" parent="." instance=ExtResource("3_lnu2h")]
-position = Vector2(77, 13)
-
-[node name="Enemy" parent="." instance=ExtResource("4_lbhrr")]
-position = Vector2(50, -61)
-
-[node name="Enemy2" parent="." instance=ExtResource("4_lbhrr")]
-position = Vector2(22, -71)
-
-[node name="Enemy3" parent="." instance=ExtResource("4_lbhrr")]
-position = Vector2(85, -47)
-
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="."]
 z_index = -5
 offset_left = -5e+06
 offset_top = -5e+06
@@ -98,7 +102,33 @@ texture = SubResource("NoiseTexture2D_u5sy4")
 stretch_mode = 1
 script = SubResource("GDScript_lnu2h")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="GameManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("6_p57ef")
+
+[node name="Timer" type="Timer" parent="GameManager"]
 wait_time = 2.0
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[node name="Coins" type="Node" parent="."]
+
+[node name="Coin" parent="Coins" instance=ExtResource("3_lnu2h")]
+position = Vector2(-66, -37)
+
+[node name="Coin2" parent="Coins" instance=ExtResource("3_lnu2h")]
+position = Vector2(-111, 47)
+
+[node name="Coin3" parent="Coins" instance=ExtResource("3_lnu2h")]
+position = Vector2(77, 13)
+
+[node name="Enemies" type="Node" parent="."]
+
+[node name="Enemy" parent="Enemies" instance=ExtResource("4_lbhrr")]
+position = Vector2(50, -61)
+
+[node name="Enemy2" parent="Enemies" instance=ExtResource("4_lbhrr")]
+position = Vector2(22, -71)
+
+[node name="Enemy3" parent="Enemies" instance=ExtResource("4_lbhrr")]
+position = Vector2(85, -47)
+
+[connection signal="timeout" from="GameManager/Timer" to="." method="_on_timer_timeout"]

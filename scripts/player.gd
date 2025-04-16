@@ -6,8 +6,8 @@ const SPEED = 60.0
 var hitpoints = 1
 
 @onready var sprite = $AnimatedSprite2D
-@onready var timer: Timer = $"../Timer"
-@onready var label: Label = $Label
+@onready var timer: Timer = $"../GameManager/Timer"
+@onready var deth_label: Label = $UI/Deth
 
 func _physics_process(delta: float) -> void:
 
@@ -31,7 +31,7 @@ func _physics_process(delta: float) -> void:
 func hit() -> void:
 	hitpoints -= 1
 	if hitpoints == 0:
-		label.visible = true
+		deth_label.visible = true
 		Engine.time_scale = 0.5
 		set_physics_process(false)
 		sprite.play("deth")
